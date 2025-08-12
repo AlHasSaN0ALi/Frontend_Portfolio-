@@ -1,0 +1,55 @@
+<div style="padding: 2rem;">
+  <h2>{{ isEditMode ? 'Edit Competition' : 'Create New Competition' }}</h2>
+  
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>Title <input type="text" formControlName="title" /></label>
+    <label>Description <textarea formControlName="description" rows="4"></textarea></label>
+    
+    <!-- Main Photo Upload -->
+    <div>
+      <label>Main Photo</label>
+      <input type="file" accept="image/*" (change)="onMainPhotoSelected($event)" />
+      <div *ngIf="mainPhotoPreview" style="margin-top: 10px;">
+        <img [src]="mainPhotoPreview" alt="Main Photo Preview" style="max-width: 200px; max-height: 200px;" />
+        <button type="button" (click)="removeMainPhoto()">Remove Main Photo</button>
+      </div>
+    </div>
+
+    <label>Date <input type="date" formControlName="date" /></label>
+
+    <!-- Gallery Photos Upload -->
+    <div>
+      <label>Gallery Photos (Max 7)</label>
+      <input type="file" accept="image/*" multiple (change)="onGalleryPhotosSelected($event)" />
+      <div *ngIf="galleryPhotoPreviews.length > 0" style="margin-top: 10px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+          <div *ngFor="let preview of galleryPhotoPreviews; let i = index" style="position: relative;">
+            <img [src]="preview" alt="Gallery Preview" style="max-width: 150px; max-height: 150px;" />
+            <button type="button" (click)="removeGalleryPhoto(i)" style="position: absolute; top: 5px; right: 5px; background: red; color: white; border: none; border-radius: 50%; width: 20px; height: 20px;">×</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Photo URLs -->
+    <div>
+      <label>Add Gallery Photo URL <input #photoInput type="text" /></label>
+      <button type="button" (click)="addPhoto(photoInput.value); photoInput.value = ''">Add</button>
+      <ul>
+        <li *ngFor="let p of photosArray.controls; let i = index">
+          {{ p.value }} <button type="button" (click)="removePhoto(i)">x</button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Upload Progress -->
+    <div *ngIf="isUploading" style="margin-top: 10px;">
+      <p>Uploading... {{ uploadProgress }}%</p>
+      <progress [value]="uploadProgress" max="100"></progress>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid || isUploading">
+      {{ isUploading ? (isEditMode ? 'Updating Competition...' : 'Creating Competition...') : (isEditMode ? 'Update Competition' : 'Create Competition') }}
+    </button>
+  </form>
+</div>

@@ -1,0 +1,12 @@
+<div style="padding: 2rem;">
+  <h2>{{ isEditMode ? 'Edit Objective' : 'Create/Edit Objective' }}</h2>
+  
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>Bio
+      <textarea formControlName="bio" rows="6"></textarea>
+    </label>
+    <button type="submit" [disabled]="form.invalid || isSubmitting">
+      {{ isSubmitting ? (isEditMode ? 'Updating Objective...' : 'Creating Objective...') : (isEditMode ? 'Update Objective' : 'Save Objective') }}
+    </button>
+  </form>
+</div>

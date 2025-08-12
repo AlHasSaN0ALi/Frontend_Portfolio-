@@ -1,0 +1,232 @@
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-logo">
+      <span class="logo-text">{{ user?.firstName }} {{ user?.lastName }}</span>
+    </div>
+    <div class="nav-menu">
+      <a href="#profile" class="nav-link">Profile</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#skills" class="nav-link">Skills</a>
+      <a href="#projects" class="nav-link">Projects</a>
+      <a href="#certificates" class="nav-link">Certificates</a>
+      <a href="#competitions" class="nav-link">Competitions</a>
+      <a href="#experience" class="nav-link">Experience</a>
+      <a href="#internships" class="nav-link">Internships</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="portfolio-container">
+  
+  <!-- Profile Section -->
+  <section id="profile" class="section profile-section">
+    <div class="container">
+      <div class="profile-content">
+        <div class="profile-image">
+          <img *ngIf="user?.photo" [src]="getImageUrl(user?.photo)" alt="Profile Photo" class="profile-photo" (error)="onImageError($event)">
+          <div *ngIf="!user?.photo" class="profile-placeholder">
+            <span>{{ user?.firstName?.charAt(0) }}{{ user?.lastName?.charAt(0) }}</span>
+          </div>
+        </div>
+        <div class="profile-info">
+          <h1 class="profile-name">{{ user?.firstName }} {{ user?.lastName }}</h1>
+          <p class="profile-role">{{ user?.role | titlecase }}</p>
+          <div class="social-links" *ngIf="user?.socialLinks">
+            <a *ngIf="user?.socialLinks?.linkedin" [href]="user?.socialLinks?.linkedin" target="_blank" class="social-link linkedin">
+              <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+            <a *ngIf="user?.socialLinks?.github" [href]="user?.socialLinks?.github" target="_blank" class="social-link github">
+              <i class="fab fa-github"></i> GitHub
+            </a>
+            <a *ngIf="user?.socialLinks?.instagram" [href]="user?.socialLinks?.instagram" target="_blank" class="social-link instagram">
+              <i class="fab fa-instagram"></i> Instagram
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="section about-section">
+    <div class="container">
+      <h2 class="section-title">About Me</h2>
+      <div class="about-content">
+        <p class="about-text">{{ objective?.bio || 'No bio available.' }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills" class="section skills-section">
+    <div class="container">
+      <h2 class="section-title">Skills</h2>
+      <div class="skills-grid">
+        <div *ngFor="let skill of skills" class="skill-card">
+          <div class="skill-icon">
+            <i class="fas fa-code"></i>
+          </div>
+          <h3 class="skill-name">{{ skill.name }}</h3>
+          <span class="skill-type">{{ skill.type }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="section projects-section">
+    <div class="container">
+      <h2 class="section-title">Projects</h2>
+      <div class="projects-grid">
+        <div *ngFor="let project of projects" class="project-card">
+          <div class="project-header">
+            <h3 class="project-title">{{ project.title }}</h3>
+            <span class="project-type">{{ project.projectType }}</span>
+          </div>
+          <p class="project-description">{{ project.description }}</p>
+          <div class="project-skills">
+            <span *ngFor="let skill of project.skills" class="project-skill">{{ skill }}</span>
+          </div>
+          <div class="project-links" *ngIf="project.links || project.github">
+            <a *ngIf="project.links" [href]="project.links" target="_blank" class="project-link">Live Demo</a>
+            <a *ngIf="project.github" [href]="project.github" target="_blank" class="project-link">GitHub</a>
+          </div>
+          <div class="project-dates">
+            <span>{{ project.startDate | date:'MMM yyyy' }} - {{ project.endDate ? (project.endDate | date:'MMM yyyy') : 'Present' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Certificates Section -->
+  <section id="certificates" class="section certificates-section">
+    <div class="container">
+      <h2 class="section-title">Certificates</h2>
+      <div class="certificates-grid">
+        <div *ngFor="let cert of certificates" class="certificate-card">
+          <div class="certificate-image">
+            <img *ngIf="cert.photo" [src]="getImageUrl(cert.photo)" alt="Certificate" class="cert-photo" (error)="onImageError($event)">
+            <div *ngIf="!cert.photo" class="cert-placeholder">
+              <i class="fas fa-certificate"></i>
+            </div>
+          </div>
+          <div class="certificate-info">
+            <h3 class="certificate-title">{{ cert.title }}</h3>
+            <p class="certificate-description">{{ cert.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Competitions Section -->
+  <section id="competitions" class="section competitions-section">
+    <div class="container">
+      <h2 class="section-title">Competitions & Achievements</h2>
+      <div class="competitions-grid">
+        <div *ngFor="let comp of competitions" class="competition-card">
+          <div class="competition-image">
+            <img *ngIf="comp.mainPhoto" [src]="getImageUrl(comp.mainPhoto)" alt="Competition" class="comp-photo" (error)="onImageError($event)">
+            <div *ngIf="!comp.mainPhoto" class="comp-placeholder">
+              <i class="fas fa-trophy"></i>
+            </div>
+          </div>
+          <div class="competition-info">
+            <h3 class="competition-title">{{ comp.title }}</h3>
+            <p class="competition-description">{{ comp.description }}</p>
+            <div class="competition-date">{{ comp.date | date:'MMM yyyy' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience Section -->
+  <section id="experience" class="section experience-section">
+    <div class="container">
+      <h2 class="section-title">Work Experience</h2>
+      <div class="timeline">
+        <div *ngFor="let exp of experiences; let i = index" class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <div class="experience-header">
+              <h3 class="experience-title">{{ exp.title }}</h3>
+              <span class="experience-company">{{ exp.company }}</span>
+            </div>
+            <div class="experience-location">{{ exp.location }}</div>
+            <div class="experience-dates">
+              {{ exp.startDate | date:'MMM yyyy' }} - {{ exp.isCurrent ? 'Present' : (exp.endDate | date:'MMM yyyy') }}
+            </div>
+            <p class="experience-description">{{ exp.description }}</p>
+            <div class="experience-responsibilities" *ngIf="exp.responsibilities?.length">
+              <h4>Responsibilities:</h4>
+              <ul>
+                <li *ngFor="let resp of exp.responsibilities">{{ resp }}</li>
+              </ul>
+            </div>
+            <div class="experience-achievements" *ngIf="exp.achievements?.length">
+              <h4>Achievements:</h4>
+              <ul>
+                <li *ngFor="let achievement of exp.achievements">{{ achievement }}</li>
+              </ul>
+            </div>
+            <div class="experience-technologies" *ngIf="exp.technologies?.length">
+              <div class="tech-tags">
+                <span *ngFor="let tech of exp.technologies" class="tech-tag">{{ tech }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Internships Section -->
+  <section id="internships" class="section internships-section">
+    <div class="container">
+      <h2 class="section-title">Internships</h2>
+      <div class="internships-grid">
+        <div *ngFor="let intern of internships" class="internship-card">
+          <div class="internship-header">
+            <div class="internship-logo" *ngIf="intern.companyLogo">
+              <img [src]="getImageUrl(intern.companyLogo)" alt="Company Logo" class="company-logo" (error)="onImageError($event)">
+            </div>
+            <div class="internship-info">
+              <h3 class="internship-title">{{ intern.title }}</h3>
+              <span class="internship-company">{{ intern.company }}</span>
+              <div class="internship-location">{{ intern.location }}</div>
+            </div>
+          </div>
+          <div class="internship-dates">
+            {{ intern.startDate | date:'MMM yyyy' }} - {{ intern.endDate | date:'MMM yyyy' }}
+          </div>
+          <p class="internship-description">{{ intern.description }}</p>
+          <div class="internship-mentor">
+            <strong>Mentor:</strong> {{ intern.mentor }}
+          </div>
+          <div class="internship-responsibilities" *ngIf="intern.responsibilities?.length">
+            <h4>Responsibilities:</h4>
+            <ul>
+              <li *ngFor="let resp of intern.responsibilities">{{ resp }}</li>
+            </ul>
+          </div>
+          <div class="internship-achievements" *ngIf="intern.achievements?.length">
+            <h4>Achievements:</h4>
+            <ul>
+              <li *ngFor="let achievement of intern.achievements">{{ achievement }}</li>
+            </ul>
+          </div>
+          <div class="internship-technologies" *ngIf="intern.technologies?.length">
+            <div class="tech-tags">
+              <span *ngFor="let tech of intern.technologies" class="tech-tag">{{ tech }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>

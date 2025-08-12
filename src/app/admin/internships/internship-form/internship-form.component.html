@@ -1,0 +1,40 @@
+<div style="padding: 2rem;">
+  <h2>{{ isEditMode ? 'Edit Internship' : 'Create New Internship' }}</h2>
+  
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>Title <input type="text" formControlName="title" /></label>
+    <label>Company <input type="text" formControlName="company" /></label>
+    <label>Location <input type="text" formControlName="location" /></label>
+    <label>Start Date <input type="date" formControlName="startDate" /></label>
+    <label>End Date <input type="date" formControlName="endDate" /></label>
+    <label>Description <textarea formControlName="description" rows="3"></textarea></label>
+
+    <div>
+      <label>Add Responsibility <input #r type="text" /></label>
+      <button type="button" (click)="addToArray(responsibilitiesArray, r.value); r.value = ''">Add</button>
+      <ul><li *ngFor="let item of responsibilitiesArray.controls; let i=index">{{ item.value }} <button type="button" (click)="removeFromArray(responsibilitiesArray, i)">x</button></li></ul>
+    </div>
+
+    <div>
+      <label>Add Achievement <input #a type="text" /></label>
+      <button type="button" (click)="addToArray(achievementsArray, a.value); a.value = ''">Add</button>
+      <ul><li *ngFor="let item of achievementsArray.controls; let i=index">{{ item.value }} <button type="button" (click)="removeFromArray(achievementsArray, i)">x</button></li></ul>
+    </div>
+
+    <div>
+      <label>Add Technology <input #t type="text" /></label>
+      <button type="button" (click)="addToArray(technologiesArray, t.value); t.value = ''">Add</button>
+      <ul><li *ngFor="let item of technologiesArray.controls; let i=index">{{ item.value }} <button type="button" (click)="removeFromArray(technologiesArray, i)">x</button></li></ul>
+    </div>
+
+    <label>Mentor <input type="text" formControlName="mentor" /></label>
+    <label>Company Logo (URL) <input type="text" formControlName="companyLogo" /></label>
+    <label>Certificate (URL) <input type="text" formControlName="certificate" /></label>
+    <label>Order <input type="number" formControlName="order" /></label>
+    <label><input type="checkbox" formControlName="isActive" /> Active</label>
+
+    <button type="submit" [disabled]="form.invalid || isSubmitting">
+      {{ isSubmitting ? (isEditMode ? 'Updating Internship...' : 'Creating Internship...') : (isEditMode ? 'Update Internship' : 'Create Internship') }}
+    </button>
+  </form>
+</div>

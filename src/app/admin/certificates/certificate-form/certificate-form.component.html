@@ -1,0 +1,28 @@
+<div style="padding: 2rem;">
+  <h2>{{ isEditMode ? 'Edit Certificate' : 'Create New Certificate' }}</h2>
+  
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>Title <input type="text" formControlName="title" /></label>
+    <label>Description <textarea formControlName="description" rows="4"></textarea></label>
+    
+    <!-- Photo Upload Section -->
+    <div>
+      <label>Certificate Photo</label>
+      <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+      <div *ngIf="imagePreview" style="margin-top: 10px;">
+        <img [src]="imagePreview" alt="Preview" style="max-width: 200px; max-height: 200px;" />
+        <button type="button" (click)="removePhoto()">Remove Photo</button>
+      </div>
+    </div>
+
+    <!-- Upload Progress -->
+    <div *ngIf="isUploading" style="margin-top: 10px;">
+      <p>Uploading... {{ uploadProgress }}%</p>
+      <progress [value]="uploadProgress" max="100"></progress>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid || isUploading">
+      {{ isUploading ? (isEditMode ? 'Updating Certificate...' : 'Creating Certificate...') : (isEditMode ? 'Update Certificate' : 'Create Certificate') }}
+    </button>
+  </form>
+</div>

@@ -1,0 +1,15 @@
+<div style="padding: 2rem;">
+  <h2>{{ isEditMode ? 'Edit Skill' : 'Create New Skill' }}</h2>
+  
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>Name <input type="text" formControlName="name" /></label>
+    <label>Type
+      <select formControlName="type">
+        <option *ngFor="let t of types" [value]="t">{{ t }}</option>
+      </select>
+    </label>
+    <button type="submit" [disabled]="form.invalid || isSubmitting">
+      {{ isSubmitting ? (isEditMode ? 'Updating Skill...' : 'Creating Skill...') : (isEditMode ? 'Update Skill' : 'Create Skill') }}
+    </button>
+  </form>
+</div>

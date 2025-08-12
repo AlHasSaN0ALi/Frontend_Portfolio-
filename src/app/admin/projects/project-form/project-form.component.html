@@ -1,0 +1,32 @@
+<div style="padding: 2rem;">
+  <h2>{{ isEditMode ? 'Edit Project' : 'Create New Project' }}</h2>
+  
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>Title <input type="text" formControlName="title" /></label>
+    <label>Description <textarea formControlName="description" rows="5"></textarea></label>
+
+    <div>
+      <label>Add Skill <input #skillInput type="text" /></label>
+      <button type="button" (click)="addSkill(skillInput.value); skillInput.value = ''">Add</button>
+      <ul>
+        <li *ngFor="let s of skillsArray.controls; let i = index">
+          {{ s.value }} <button type="button" (click)="removeSkill(i)">x</button>
+        </li>
+      </ul>
+    </div>
+
+    <label>Links <input type="url" formControlName="links" /></label>
+    <label>GitHub <input type="url" formControlName="github" /></label>
+    <label>Start Date <input type="date" formControlName="startDate" /></label>
+    <label>End Date <input type="date" formControlName="endDate" /></label>
+    <label>Type
+      <select formControlName="projectType">
+        <option *ngFor="let t of projectTypes" [value]="t">{{ t }}</option>
+      </select>
+    </label>
+
+    <button type="submit" [disabled]="form.invalid || isSubmitting">
+      {{ isSubmitting ? (isEditMode ? 'Updating Project...' : 'Creating Project...') : (isEditMode ? 'Update Project' : 'Create Project') }}
+    </button>
+  </form>
+</div>

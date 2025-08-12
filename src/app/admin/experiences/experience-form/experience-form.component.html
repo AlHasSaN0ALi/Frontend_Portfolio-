@@ -1,0 +1,62 @@
+<div style="padding: 2rem;">
+  <h2>{{ isEditMode ? 'Edit Experience' : 'Create New Experience' }}</h2>
+  
+  <!-- Debug Info -->
+  <div style="background: #f0f0f0; padding: 10px; margin-bottom: 20px; font-size: 12px;">
+    <strong>Debug Info:</strong><br>
+    Form Valid: {{ form.valid }}<br>
+    Form Errors: {{ form.errors | json }}<br>
+    Title Errors: {{ form.get('title')?.errors | json }}<br>
+    Company Errors: {{ form.get('company')?.errors | json }}<br>
+    StartDate Errors: {{ form.get('startDate')?.errors | json }}<br>
+    Order Errors: {{ form.get('order')?.errors | json }}
+  </div>
+  
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>Title <input type="text" formControlName="title" /></label>
+    <div *ngIf="form.get('title')?.invalid && form.get('title')?.touched" style="color: red; font-size: 12px;">
+      Title is required
+    </div>
+    
+    <label>Company <input type="text" formControlName="company" /></label>
+    <div *ngIf="form.get('company')?.invalid && form.get('company')?.touched" style="color: red; font-size: 12px;">
+      Company is required
+    </div>
+    
+    <label>Location <input type="text" formControlName="location" /></label>
+    <label>Start Date <input type="date" formControlName="startDate" /></label>
+    <div *ngIf="form.get('startDate')?.invalid && form.get('startDate')?.touched" style="color: red; font-size: 12px;">
+      Start Date is required
+    </div>
+    
+    <label>End Date <input type="date" formControlName="endDate" /></label>
+    <label><input type="checkbox" formControlName="isCurrent" /> Current</label>
+    <label>Description <textarea formControlName="description" rows="3"></textarea></label>
+
+    <div>
+      <label>Add Responsibility <input #r type="text" /></label>
+      <button type="button" (click)="addToArray(responsibilitiesArray, r.value); r.value = ''">Add</button>
+      <ul><li *ngFor="let item of responsibilitiesArray.controls; let i=index">{{ item.value }} <button type="button" (click)="removeFromArray(responsibilitiesArray, i)">x</button></li></ul>
+    </div>
+
+    <div>
+      <label>Add Achievement <input #a type="text" /></label>
+      <button type="button" (click)="addToArray(achievementsArray, a.value); a.value = ''">Add</button>
+      <ul><li *ngFor="let item of achievementsArray.controls; let i=index">{{ item.value }} <button type="button" (click)="removeFromArray(achievementsArray, i)">x</button></li></ul>
+    </div>
+
+    <div>
+      <label>Add Technology <input #t type="text" /></label>
+      <button type="button" (click)="addToArray(technologiesArray, t.value); t.value = ''">Add</button>
+      <ul><li *ngFor="let item of technologiesArray.controls; let i=index">{{ item.value }} <button type="button" (click)="removeFromArray(technologiesArray, i)">x</button></li></ul>
+    </div>
+
+    <label>Company Logo (URL) <input type="text" formControlName="companyLogo" /></label>
+    <label>Order <input type="number" formControlName="order" /></label>
+    <label><input type="checkbox" formControlName="isActive" /> Active</label>
+
+    <button type="submit" [disabled]="form.invalid || isSubmitting">
+      {{ isSubmitting ? (isEditMode ? 'Updating Experience...' : 'Creating Experience...') : (isEditMode ? 'Update Experience' : 'Create Experience') }}
+    </button>
+  </form>
+</div>

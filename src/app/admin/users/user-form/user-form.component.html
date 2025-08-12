@@ -1,0 +1,37 @@
+<div style="padding: 2rem;">
+  <h2>{{ isEditMode ? 'Edit User' : 'Create New User' }}</h2>
+  
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>First Name <input type="text" formControlName="firstName" /></label>
+    <label>Last Name <input type="text" formControlName="lastName" /></label>
+    <label>Role
+      <select formControlName="role">
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+      </select>
+    </label>
+    <label>LinkedIn <input type="url" formControlName="linkedin" /></label>
+    <label>Instagram <input type="url" formControlName="instagram" /></label>
+    <label>GitHub <input type="url" formControlName="github" /></label>
+    
+    <!-- Photo Upload Section -->
+    <div>
+      <label>Profile Photo</label>
+      <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+      <div *ngIf="imagePreview" style="margin-top: 10px;">
+        <img [src]="imagePreview" alt="Preview" style="max-width: 200px; max-height: 200px;" />
+        <button type="button" (click)="removePhoto()">Remove Photo</button>
+      </div>
+    </div>
+
+    <!-- Upload Progress -->
+    <div *ngIf="isUploading" style="margin-top: 10px;">
+      <p>Uploading... {{ uploadProgress }}%</p>
+      <progress [value]="uploadProgress" max="100"></progress>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid || isUploading">
+      {{ isUploading ? (isEditMode ? 'Updating User...' : 'Creating User...') : (isEditMode ? 'Update User' : 'Create User') }}
+    </button>
+  </form>
+</div>
